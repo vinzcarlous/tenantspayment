@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tenant Payment Management By Vinz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+    }
+
+    h2 {
+      color: #4CAF50; /* Pink color */
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+
+    button {
+      background-color: #4CAF50; /* Pink color */
+      color: Grey
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    td button {
+      background-color: #f44336; /* Red for delete */
+      color: white;
+      padding: 5px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    td button:hover {
+      background-color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Tenant Payment Management</h2>
+  
+  <form id="paymentForm">
+    <label for="roomNumber">Room Number</label>
+    <input type="text" id="roomNumber" required>
+    
+    <label for="reportingDate">Date of Reporting</label>
+    <input type="date" id="reportingDate" required>
+    
+    <label for="paymentDate">Date of Payment</label>
+    <input type="date" id="paymentDate" required>
+    
+    <label for="amountPaid">Amount Paid</label>
+    <input type="number" id="amountPaid" required>
+    
+    <label for="paymentMethod">Payment Method</label>
+    <select id="paymentMethod" required>
+      <option value="cash">Cash</option>
+      <option value="mobile_money">Mobile Money</option>
+    </select>
+    
+    <button type="submit">Submit Payment</button>
+  </form>
+
+  <h3>Payment Records</h3>
+  <table id="paymentsTable">
+    <thead>
+      <tr>
+        <th>Room Number</th>
+        <th>Date of Reporting</th>
+        <th>Date of Payment</th>
+        <th>Amount Paid</th>
+        <th>Payment Method</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Payment records will be inserted here dynamically -->
+    </tbody>
+  </table>
+
+  <script>
+    const paymentForm = document.getElementById('paymentForm');
+    const paymentsTable = document.getElementById('paymentsTable').getElementsByTagName('tbody')[0];
+
+    paymentForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Get form data
+      const roomNumber = document.getElementById('roomNumber').value;
+      const reportingDate = document.getElementById('reportingDate').value;
+      const paymentDate = document.getElementById('paymentDate').value;
+      const amountPaid = document.getElementById('amountPaid').value;
+      const paymentMethod = document.getElementById('paymentMethod').value;
+
+      // Create a new row in the table
+      const newRow = paymentsTable.insertRow();
+      newRow.innerHTML = `
+        <td>${roomNumber}</td>
+        <td>${reportingDate}</td>
+        <td>${paymentDate}</td>
+        <td>${amountPaid}</td>
+        <td>${paymentMethod}</td>
+        <td>
+          <button onclick="editPayment(this)">Edit</button>
+          <button onclick="deletePayment(this)">Delete</button>
+        </td>
+      `;
+    });
+
+    function editPayment(button) {
+      const row = button.parentElement.parentElement;
+      const cells = row.cells;
+
+      document.getElementById('roomNumber').value = cells[0].innerText;
+      document.getElementById('reportingDate').value = cells[1].innerText;
+      document.getElementById('paymentDate').value = cells[2].innerText;
+      document.getElementById('amountPaid').value = cells[3].innerText;
+      document.getElementById('paymentMethod').value = cells[4].innerText;
+
+      row.remove();
+    }
+
+    function deletePayment(button) {
+      const row = button.parentElement.parentElement;
+      row.remove();
+    }
+  </script>
+
+</body>
+</html>
